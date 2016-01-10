@@ -1,0 +1,31 @@
+{
+  "USA": [
+    "New York",
+    "San Francisco",
+    "Phoenix",
+    "Chicago"
+  ],
+
+  "Germany": [
+    "Berlin",
+    "Hamburg",
+    "Munich",
+    "Cologne",
+    "Frankfurt"
+  ],
+
+  "Great Britain": [
+    "London",
+    "Liverpool",
+    "Manchester",
+    "Cardiff",
+    "Glasgow"
+  ],
+
+  "Canada": [
+    "Ottawa",
+    "Montreal",
+    "Toronto",
+    "Vancouver"
+  ]
+}
