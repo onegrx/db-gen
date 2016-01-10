@@ -4,7 +4,7 @@ import json
 import random
 
 
-class LocationsGenerator:
+class Location:
 
     def generate(self):
         with open('data/locations.json') as f:
@@ -12,9 +12,12 @@ class LocationsGenerator:
             country = random.choice(list(data.keys()))
             cities = data[country]
             city = random.choice(cities)
-            print(country + " - " + city)
+            return city, country
+
+    def show(self):
+        print(self.generate())
 
 
-gen = LocationsGenerator()
 for i in range(100):
-    gen.generate()
+    gen = Location()
+    gen.show()
