@@ -8,12 +8,12 @@ class Connector:
     def __init__(self):
         self.server = 'mssql.iisg.agh.edu.pl'
         self.user = 'skala'
-        self.db = ''
+        self.db = 'skala_a'
 
     def connect(self, password):
-        conn = pymssql.connect(self.server, self.user, password)
+        conn = pymssql.connect(self.server, self.user, password, self.db)
         cursor = conn.cursor()
-        cursor.execute("SELECT name FROM master.dbo.sysdatabases")
+        cursor.execute("SELECT * FROM information_schema.tables")
 
         for row in cursor:
             print('row = %r' % (row,))
@@ -21,4 +21,4 @@ class Connector:
         conn.close()
 
 c = Connector()
-c.connect("password")
+c.connect("")
