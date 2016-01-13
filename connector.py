@@ -1,6 +1,7 @@
 __author__ = 'onegrx'
 
 import pymssql
+from password import secretpassword
 
 
 class Connector:
@@ -12,13 +13,23 @@ class Connector:
 
     def connect(self, password):
         conn = pymssql.connect(self.server, self.user, password, self.db)
+        conn.autocommit(True)
+        return conn
+
+    """ Execue procedure on conn, args has to be tuple of arguments"""
+    def execproc(self, conn, procedure, args):
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM information_schema.tables")
+        cursor.callproc(procedure, args)
 
-        for row in cursor:
-            print('row = %r' % (row,))
+    def execquery(self, conn, query):
+        cursor = conn.cursor()
+        cursor.execute(query)
 
+    def close(self, conn):
         conn.close()
 
-c = Connector()
-c.connect("")
+
+
+
+
+
