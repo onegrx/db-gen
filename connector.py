@@ -1,8 +1,6 @@
 __author__ = 'onegrx'
 
 import pymssql
-from password import secretpassword
-
 
 class Connector:
 
