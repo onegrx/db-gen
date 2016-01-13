@@ -23,6 +23,11 @@ class Connector:
         cursor = conn.cursor()
         cursor.execute(query)
 
+    def fetchdata(self, password):
+        connection = self.connect(password)
+        cursor = connection.cursor()
+        return cursor
+
     def close(self, conn):
         conn.close()
 
