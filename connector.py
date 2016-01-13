@@ -6,12 +6,19 @@ import pymssql
 class Connector:
 
     def __init__(self):
-        self.server = 'iisg.agh.edu.pl'
+        self.server = 'mssql.iisg.agh.edu.pl'
         self.user = 'skala'
         self.db = ''
 
+    def connect(self, password):
+        conn = pymssql.connect(self.server, self.user, password)
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM master.dbo.sysdatabases")
 
-    def conncect(self, password):
-        connection = pymssql.connect(self.server, self.user, password, self.db)
-        cursor = connection.cursor()
-        #cursor.execute()
+        for row in cursor:
+            print('row = %r' % (row,))
+
+        conn.close()
+
+c = Connector()
+c.connect("password")
