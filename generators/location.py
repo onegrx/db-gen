@@ -17,7 +17,3 @@ class Location:
     def show(self):
         print(self.generate())
 
-
-for i in range(100):
-    gen = Location()
-    gen.show()

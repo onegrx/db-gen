@@ -21,6 +21,3 @@ class Person:
     def show(self):
         print(self.generate())
 
-for i in range(20):
-    gen = Person()
-    gen.show()

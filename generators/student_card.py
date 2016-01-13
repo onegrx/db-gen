@@ -16,7 +16,3 @@ class StudentCard:
     def show(self, n):
         print(self.generate(n))
 
-
-for i in range(100):
-    gen = StudentCard()
-    gen.show(4)
