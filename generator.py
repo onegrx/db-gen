@@ -1,7 +1,7 @@
 __author__ = 'onegrx'
 
-from connector import Connector
-from password import secretpassword
+# from connector import Connector
+# from password import secretpassword
 
 import math
 
@@ -9,19 +9,37 @@ from data_get import *
 
 ###############################################
 
+
 def gen_add_company():
 
     city, country = getCityCountry()
     company = getCompany()
-    login = getLogin(company)
+    login = getLoginCompany(company)
     mail = getMail(company)
     phone = getPhone()
     street = getStreet()
     zipcode = getZip()
+    nip = getNip()
 
-    add_company = (company, login, mail, phone, street, city, zipcode, country)
+    add_company = (company, nip, login, mail, phone, street, city, zipcode, country)
 
     return add_company
+
+
+def gen_add_individual():
+
+    name, surname = getNameSurname()
+    login = getLoginPersonal(name, surname)
+    mail = getMailPersonal(name, surname)
+    phone = getPhone()
+    street = getStreet()
+    city, country = getCityCountry()
+    zipcode = getZip()
+
+    add_individual = (name, surname, login, mail, phone, street, city, zipcode, country)
+
+    return add_individual
+
 
 def gen_add_conference():
 
@@ -34,8 +52,12 @@ def gen_add_conference():
 
     begin, end = getDates()
 
-    add_conference = (conference, begin, end, street, city, zipcode, country, spots)
+    price = getPrice()
+    discount = '0.5'
+
+    add_conference = (conference, begin, end, street, city, zipcode, country, spots, price, discount)
     return add_conference
+
 
 def gen_add_prices(idconf, i, confday, price):
 
@@ -50,28 +72,28 @@ def gen_add_prices(idconf, i, confday, price):
     result = (str(idconf), str(math.ceil(tresholds[i])), "/".join(since[i]), str(discount))
     return result
 
-def apply_gen_add_prices():
-    connector = Connector()
-    conn = connector.connect(secretpassword)
-    cursor = conn.cursor()
-    cursor.execute("select * from conferences")
-    row = cursor.fetchone()
-
-    c = Connector()
-    cn = c.connect(secretpassword)
-
-    while row:
-        idconf = row[0]
-        dayconf = row[2]
-        price = random.randint(3, 500) * 10
-        for i in range(3):
-            res = gen_add_prices(idconf, i, dayconf, price)
-            c.execproc(cn, 'AddPrice', res)
-            print(res)
-        row = cursor.fetchone()
-    conn.close()
-
-    c.close(cn)
-
-
-apply_gen_add_prices()
+# def apply_gen_add_prices():
+#     connector = Connector()
+#     conn = connector.connect(secretpassword)
+#     cursor = conn.cursor()
+#     cursor.execute("select * from conferences")
+#     row = cursor.fetchone()
+#
+#     c = Connector()
+#     cn = c.connect(secretpassword)
+#
+#     while row:
+#         idconf = row[0]
+#         dayconf = row[2]
+#         price = random.randint(3, 500) * 10
+#         for i in range(3):
+#             res = gen_add_prices(idconf, i, dayconf, price)
+#             c.execproc(cn, 'AddPrice', res)
+#             print(res)
+#         row = cursor.fetchone()
+#     conn.close()
+#
+#     c.close(cn)
+#
+#
+# apply_gen_add_prices()
