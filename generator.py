@@ -141,4 +141,4 @@ def fill_gen_book_places_for_day():
     cn.close()
 
 
-fill_gen_book_places_for_day()
+# fill_gen_book_places_for_day()

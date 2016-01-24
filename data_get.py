@@ -18,12 +18,12 @@ def getNameSurname():
 
 
 def getMail(user):
-    mail = user[0:5].lower() + "@" + user[0:3] + ".com"
+    mail = user[0:5].lower() + "@" + user[0:3].lower() + ".com"
     return mail
 
 
 def getMailPersonal(n, s):
-    return n[0:6].lower() + "@" + s[0:5].lower + ".com"
+    return n[0:6].lower() + "@" + s[0:5].lower() + ".com"
 
 
 def getCompany():

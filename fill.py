@@ -7,10 +7,6 @@ filler = Connector()
 records = 20
 
 
-
-
-
-
 """The first slow version of calling, one connection per one query"""
 def fill_add_company_slow():
     for i in range(records):
@@ -26,6 +22,10 @@ def fill_add_company():
     args = [gen_add_company() for i in range(records)]
     filler.apply_proc_multi(procedure, args, records)
 
+def fill_add_individual():
+    procedure = 'AddIndividual'
+    args = [gen_add_individual() for i in range(records)]
+    filler.apply_proc_multi(procedure, args, records)
 
 def fill_add_conference_slow():
     for i in range(records):
@@ -51,9 +51,10 @@ def fill_add_reservations():
 
 
 def main():
-    fill_add_company()
-    fill_add_conference()
-    fill_add_thresholds()
+   # fill_add_company()
+    fill_add_individual()
+   # fill_add_conference()
+   # fill_add_thresholds()
 
 
 
