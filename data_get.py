@@ -91,4 +91,4 @@ def getDates():
 
 
 def getPrice():
-    return random.randint(3, 500) * 10
+    return random.randint(5, 100) * 10

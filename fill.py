@@ -41,22 +41,29 @@ def fill_add_conference():
     filler.apply_proc_multi(procedure, args, records)
 
 
+def fill_add_workshop_type():
+    procedure = 'AddWorkshopType'
+    args = [("How to master your IT skills #" + str(i + 1), ) for i in range(records)]
+    filler.apply_proc_multi(procedure, args, records)
+
+
 def fill_add_thresholds():
     fill_gen_add_thresholds()
 
 
 def fill_add_reservations():
-    pass
+    fill_gen_book_places_for_day()
 
 
 
 def main():
-   # fill_add_company()
+    fill_add_company()
     fill_add_individual()
-   # fill_add_conference()
-   # fill_add_thresholds()
+    fill_add_conference()
+    fill_add_workshop_type()
+    fill_add_thresholds()
+    fill_add_reservations()
 
 
-
-main()
+# main()
 

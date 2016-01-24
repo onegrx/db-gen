@@ -27,5 +27,20 @@
     "Montreal",
     "Toronto",
     "Vancouver"
+  ],
+
+  "France": [
+    "Paris",
+    "Marseille",
+    "Lyon",
+    "Nice",
+    "Bordeaux"
+  ],
+
+  "Spain": [
+    "Madrid",
+    "Barcelona",
+    "Valencia",
+    "Seville"
   ]
 }

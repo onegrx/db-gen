@@ -45,11 +45,3 @@ class Connector:
     #     cursor = connection.cursor()
     #     return cursor
 
-
-
-
-
-
-
-
-

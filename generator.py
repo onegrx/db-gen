@@ -128,17 +128,15 @@ def fill_gen_book_places_for_day():
 
         for reservation in range(3):
             client = random.choice(clients)
-            spots = random.randint(1, spots_avail/2)
+            spots = random.randint(1, int(spots_avail/4))
             book_ord = dt.datetime.fromordinal(begin - random.randint(1, 80))
             date_of_book = "/".join((str(book_ord.year), str(book_ord.month), str(book_ord.day)))
             result = (dayid, client, spots, date_of_book)
-            print(result)
-            #c.apply_proc('GeneratorBookPlacesForDay', result)
+            print("Book spots for the day " + str(result))
+            c.apply_proc('GeneratorBookPlacesForDay', result)
 
         row = cursor.fetchone()
 
     conn.close()
     cn.close()
 
-
-# fill_gen_book_places_for_day()
