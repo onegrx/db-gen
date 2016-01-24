@@ -65,6 +65,10 @@ def fill_add_workshop():
     fill_gen_add_workshop()
 
 
+def fill_add_workshop_reservations():
+    fill_gen_book_places_for_workshop()
+
+
 def main():
 
     print("***** Filling Company table *****")
@@ -86,6 +90,9 @@ def main():
 
     print("***** Filling Reservations table *****")
     fill_add_reservations()
+
+    print("***** Filling Workshop Reservations table *****")
+    fill_add_workshop_reservations()
 
     print("***** Filling Attendee table with employees + individuals by procedure *****")
     fill_add_attendee()

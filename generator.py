@@ -2,7 +2,8 @@ __author__ = 'onegrx'
 
 from connector import Connector
 from password import secretpassword
-import random
+
+import math
 
 from data_get import *
 
@@ -209,4 +210,34 @@ def fill_gen_add_workshop():
         c.apply_proc('AddWorkshop', result)
 
     cn.close()
+
+
+def fill_gen_book_places_for_workshop():
+    connector = Connector()
+    conn = connector.connect(secretpassword)
+    cursor = conn.cursor()
+
+    cursor.execute("select Reservations.ReservationID, WorkshopID, MaxSpots "
+                   "from DaysOfConf "
+                   "inner join Workshops on Workshops.DayID = DaysOfConf.DayID "
+                   "inner join Reservations on Reservations.DayID = DaysOfConf.DayID")
+    row = cursor.fetchone()
+
+    c = Connector()
+    cn = c.connect(secretpassword)
+
+    while row:
+        reservationid = row[0]
+        workshopid = row[1]
+        maxspots = math.floor(row[2] / 3)
+
+        result = (reservationid, workshopid, maxspots)
+        print("Add Workshop Reservation " + str(result))
+        c.apply_proc('BookPlacesForWorkshop', result)
+
+        row = cursor.fetchone()
+
+    conn.close()
+    cn.close()
+
 
