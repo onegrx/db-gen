@@ -61,6 +61,10 @@ def fill_add_attendee():
     fill_gen_add_attendees()
 
 
+def fill_add_workshop():
+    fill_gen_add_workshop()
+
+
 def main():
 
     print("***** Filling Company table *****")
@@ -73,6 +77,9 @@ def main():
 
     print("***** Filling WorkshopType table *****")
     fill_add_workshop_type()
+
+    print("***** Filling Workshop table *****")
+    fill_add_workshop()
 
     print("***** Filling Prices table *****")
     fill_add_thresholds()

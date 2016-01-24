@@ -169,4 +169,44 @@ def fill_gen_add_attendees():
     cn.close()
 
 
+def fill_gen_add_workshop():
+
+    connector = Connector()
+    conn = connector.connect(secretpassword)
+
+    workshop_types_id = []
+    workshop_getter = conn.cursor()
+    workshop_getter.execute("select WorkshopTypeID from WorkshopType")
+    types_row = workshop_getter.fetchone()
+    while types_row:
+        workshop_types_id.append(types_row[0])
+        types_row = workshop_getter.fetchone()
+
+    days_id = []
+    days_getter = conn.cursor()
+    days_getter.execute("select DayID from DaysOfConf")
+    days_row = days_getter.fetchone()
+    while days_row:
+        days_id.append(days_row[0])
+        days_row = days_getter.fetchone()
+
+    conn.close()
+
+    print(workshop_types_id)
+    print(days_id)
+
+    c = Connector()
+    cn = c.connect(secretpassword)
+
+    for day in days_id:
+        workshop = random.choice(workshop_types_id)
+        start = random.choice(["14:00:00", "15:00:00", "16:00:00"])
+        end = random.choice(["18:00:00", "19:00:00", "20:00:00"])
+        spots = random.choice([5, 10, 15, 20])
+        price = random.randint(2, 15) * 10
+        result = (workshop, day, start, end, spots, price)
+        print("Add Workshop " + str(result))
+        c.apply_proc('AddWorkshop', result)
+
+    cn.close()
 
