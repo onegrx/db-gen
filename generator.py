@@ -128,7 +128,7 @@ def fill_gen_book_places_for_day():
         for reservation in range(3):
             client = random.choice(clients)
             spots = random.randint(1, int(spots_avail/4))
-            book_ord = dt.datetime.fromordinal(begin - random.randint(1, 80))
+            book_ord = dt.datetime.fromordinal(begin - random.randint(15, 80))
             date_of_book = "/".join((str(book_ord.year), str(book_ord.month), str(book_ord.day)))
             result = (dayid, client, spots, date_of_book)
             print("Book spots for the day " + str(result))
@@ -239,5 +239,44 @@ def fill_gen_book_places_for_workshop():
 
     conn.close()
     cn.close()
+
+
+def fill_gen_add_payment():
+    connector = Connector()
+    conn = connector.connect(secretpassword)
+    cursor = conn.cursor()
+
+    cursor.execute("select ReservationID, ToPay, ReservationDate from Reservations")
+    row = cursor.fetchone()
+
+    ratio = [i / 10 for i in range(1, 11)]
+
+    c = Connector()
+    cn = c.connect(secretpassword)
+
+    while row:
+        reservationid = row[0]
+        topay = row[1]
+        date = row[2]
+        money_deposited = math.floor(int(topay) * random.choice(ratio))
+
+        (y, m, d) = date.split("-")
+        begin = dt.date(int(y), int(m), int(d)).toordinal()
+        book_ord = dt.datetime.fromordinal(begin + random.randint(1, 7))
+        date_of_payment = "/".join((str(book_ord.year), str(book_ord.month), str(book_ord.day)))
+
+        result = (reservationid, money_deposited, date_of_payment)
+        print("Add Payment " + str(result))
+        c.apply_proc('GeneratorAddPayment', result)
+
+        row = cursor.fetchone()
+
+    conn.close()
+    cn.close()
+
+
+
+
+
 
 

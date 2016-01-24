@@ -69,10 +69,15 @@ def fill_add_workshop_reservations():
     fill_gen_book_places_for_workshop()
 
 
+def fill_add_payment():
+    fill_gen_add_payment()
+
+
 def main():
 
     print("***** Filling Company table *****")
     fill_add_company()
+
     print("***** Filling Individual table *****")
     fill_add_individual()
 
@@ -97,6 +102,8 @@ def main():
     print("***** Filling Attendee table with employees + individuals by procedure *****")
     fill_add_attendee()
 
+    print("***** Filling Deposits table *****")
+    fill_add_payment()
 
-# main()
+main()
 
