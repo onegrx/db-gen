@@ -4,8 +4,6 @@ from connector import Connector
 from password import secretpassword
 import random
 
-import math
-
 from data_get import *
 
 ###############################################
@@ -139,4 +137,36 @@ def fill_gen_book_places_for_day():
 
     conn.close()
     cn.close()
+
+
+def fill_gen_add_attendees():
+    connector = Connector()
+    conn = connector.connect(secretpassword)
+    cursor = conn.cursor()
+
+    cursor.execute("select company.clientid, spotsreserved from company "
+                   "inner join clients on clients.clientid = company.clientid "
+                   "inner join reservations on reservations.clientid = clients.clientid")
+    row = cursor.fetchone()
+
+    c = Connector()
+    cn = c.connect(secretpassword)
+
+    while row:
+        clientid = row[0]
+        spots_reserved = row[1]
+
+        for reservation in range(spots_reserved):
+
+            name, surname = getNameSurname()
+            result = (clientid, name, surname)
+            print("Add Attendee " + str(result))
+            c.apply_proc('AddAttendee', result)
+
+        row = cursor.fetchone()
+
+    conn.close()
+    cn.close()
+
+
 

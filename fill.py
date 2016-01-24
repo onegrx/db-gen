@@ -22,10 +22,12 @@ def fill_add_company():
     args = [gen_add_company() for i in range(records)]
     filler.apply_proc_multi(procedure, args, records)
 
+
 def fill_add_individual():
     procedure = 'AddIndividual'
     args = [gen_add_individual() for i in range(records)]
     filler.apply_proc_multi(procedure, args, records)
+
 
 def fill_add_conference_slow():
     for i in range(records):
@@ -55,14 +57,31 @@ def fill_add_reservations():
     fill_gen_book_places_for_day()
 
 
+def fill_add_attendee():
+    fill_gen_add_attendees()
+
 
 def main():
+
+    print("***** Filling Company table *****")
     fill_add_company()
+    print("***** Filling Individual table *****")
     fill_add_individual()
+
+    print("***** Filling Conferences table + DaysOfConf by procedure *****")
     fill_add_conference()
+
+    print("***** Filling WorkshopType table *****")
     fill_add_workshop_type()
+
+    print("***** Filling Prices table *****")
     fill_add_thresholds()
+
+    print("***** Filling Reservations table *****")
     fill_add_reservations()
+
+    print("***** Filling Attendee table with employees + individuals by procedure *****")
+    fill_add_attendee()
 
 
 # main()
