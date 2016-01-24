@@ -1,7 +1,8 @@
 __author__ = 'onegrx'
 
-# from connector import Connector
-# from password import secretpassword
+from connector import Connector
+from password import secretpassword
+import random
 
 import math
 
@@ -59,41 +60,85 @@ def gen_add_conference():
     return add_conference
 
 
-def gen_add_prices(idconf, i, confday, price):
+def gen_add_thresholds(idconf, i, confday):
 
-    discount = 0.5
-    tresholds = [price * 0.4, price * 0.7, price]
+    thresholds = [0.4, 0.7, 1]
     (y, m, d) = confday.split("-")
     begin = dt.date(int(y), int(m), int(d)).toordinal()
-    raw_since = [dt.datetime.fromordinal(begin - 100), dt.datetime.fromordinal(begin - 30),
-             dt.datetime.fromordinal(begin)]
+    # Those dates are rather to than since
+    raw_since = [dt.datetime.fromordinal(begin - 90), dt.datetime.fromordinal(begin - 60),
+             dt.datetime.fromordinal(begin - 30)]
     since = [(str(date.year), str(date.month), str(date.day)) for date in raw_since]
 
-    result = (str(idconf), str(math.ceil(tresholds[i])), "/".join(since[i]), str(discount))
+    result = (str(idconf), str(thresholds[i]), "/".join(since[i]))
     return result
 
-# def apply_gen_add_prices():
-#     connector = Connector()
-#     conn = connector.connect(secretpassword)
-#     cursor = conn.cursor()
-#     cursor.execute("select * from conferences")
-#     row = cursor.fetchone()
-#
-#     c = Connector()
-#     cn = c.connect(secretpassword)
-#
-#     while row:
-#         idconf = row[0]
-#         dayconf = row[2]
-#         price = random.randint(3, 500) * 10
-#         for i in range(3):
-#             res = gen_add_prices(idconf, i, dayconf, price)
-#             c.execproc(cn, 'AddPrice', res)
-#             print(res)
-#         row = cursor.fetchone()
-#     conn.close()
-#
-#     c.close(cn)
-#
-#
-# apply_gen_add_prices()
+
+def fill_gen_add_thresholds():
+    connector = Connector()
+    conn = connector.connect(secretpassword)
+    cursor = conn.cursor()
+    cursor.execute("select * from conferences")
+    row = cursor.fetchone()
+
+    c = Connector()
+    cn = c.connect(secretpassword)
+
+    while row:
+        idconf = row[0]
+        dayofconf = row[2]
+        for threshold in range(3):
+            res = gen_add_thresholds(idconf, threshold, dayofconf)
+            c.apply_proc('AddPrice', res)
+            print(res)
+        row = cursor.fetchone()
+    conn.close()
+
+    cn.close()
+
+
+def fill_gen_book_places_for_day():
+    connector = Connector()
+    conn = connector.connect(secretpassword)
+    cursor = conn.cursor()
+    clients = []
+    clients_getter = conn.cursor()
+    clients_getter.execute("select clientid from clients")
+    clients_ids = clients_getter.fetchone()
+    while clients_ids:
+        clients.append(clients_ids[0])
+        clients_ids = clients_getter.fetchone()
+
+    cursor.execute("select DayId, conferences.DateFrom, Spots "
+                   "from DaysOfConf "
+                   "inner join Conferences on conferences.ConferenceId = daysofconf.ConferenceId")
+    row = cursor.fetchone()
+
+    c = Connector()
+    cn = c.connect(secretpassword)
+
+
+    while row:
+        dayid = row[0]
+        date = row[1]
+        spots_avail = row[2]
+
+        (y, m, d) = date.split("-")
+        begin = dt.date(int(y), int(m), int(d)).toordinal()
+
+        for reservation in range(3):
+            client = random.choice(clients)
+            spots = random.randint(1, spots_avail/2)
+            book_ord = dt.datetime.fromordinal(begin - random.randint(1, 80))
+            date_of_book = "/".join((str(book_ord.year), str(book_ord.month), str(book_ord.day)))
+            result = (dayid, client, spots, date_of_book)
+            print(result)
+            #c.apply_proc('GeneratorBookPlacesForDay', result)
+
+        row = cursor.fetchone()
+
+    conn.close()
+    cn.close()
+
+
+fill_gen_book_places_for_day()

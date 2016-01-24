@@ -4,7 +4,12 @@ from generator import *
 from connector import Connector
 
 filler = Connector()
-records = 10
+records = 20
+
+
+
+
+
 
 """The first slow version of calling, one connection per one query"""
 def fill_add_company_slow():
@@ -36,7 +41,21 @@ def fill_add_conference():
     filler.apply_proc_multi(procedure, args, records)
 
 
+def fill_add_thresholds():
+    fill_gen_add_thresholds()
+
+
+def fill_add_reservations():
+    pass
 
 
 
+def main():
+    fill_add_company()
+    fill_add_conference()
+    fill_add_thresholds()
+
+
+
+main()
 
