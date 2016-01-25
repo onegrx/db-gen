@@ -109,5 +109,11 @@ def main():
     print("***** Filling Deposits table *****")
     fill_add_payment()
 
+    # fill_add_participation()
+
+    # fill_gen_assign_workshop_attendee()
+
+
+
 #main()
 

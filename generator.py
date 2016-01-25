@@ -329,4 +329,32 @@ def fill_gen_assign_attendee():
     conn.close()
 
 
+def fill_gen_assign_workshop_attendee():
+
+    connector = Connector()
+    conn = connector.connect(secretpassword)
+    cursor = conn.cursor()
+
+    workshop_attendees = []
+
+    cursor.execute("select distinct Attendees.AttendeeID, WorkshopReservations.WReservationID "
+                   "from Attendees "
+                   "inner join Participation on Participation.AttendeeID = Attendees.AttendeeID "
+                   "inner join Reservations on Reservations.ReservationID = Participation.ReservationID "
+                   "inner join WorkshopReservations on WorkshopReservations.ReservationID = Reservations.ReservationID")
+
+    row = cursor.fetchone()
+
+    while row:
+        workshop_attendees.append((row[0], row[1]))
+        row = cursor.fetchone()
+
+    filler = Connector()
+
+    workshop_attendees_size = len(workshop_attendees)
+    filler.apply_proc_multi('AssignParticipantToWorkshop', workshop_attendees, workshop_attendees_size)
+
+
+
+    conn.close()
 

@@ -33,7 +33,7 @@ class Connector:
             except _mssql.MssqlDatabaseException:
                 print("error")
             except pymssql.DatabaseError:
-                print("error2")
+                print("error")
         conn.close()
 
 
