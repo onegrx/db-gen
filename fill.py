@@ -73,6 +73,10 @@ def fill_add_payment():
     fill_gen_add_payment()
 
 
+def fill_add_participation():
+    fill_gen_assign_attendee()
+
+
 def main():
 
     print("***** Filling Company table *****")
@@ -105,5 +109,5 @@ def main():
     print("***** Filling Deposits table *****")
     fill_add_payment()
 
-main()
+#main()
 

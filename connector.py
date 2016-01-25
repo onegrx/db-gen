@@ -1,6 +1,7 @@
 __author__ = 'onegrx'
 
 import pymssql
+import _mssql
 
 from password import secretpassword
 
@@ -26,8 +27,13 @@ class Connector:
         conn = self.connect(secretpassword)
         cursor = conn.cursor()
         for i in range(n):
-            cursor.callproc(procedure, args[i])
-            print(procedure + " " + ", ".join(str(v) for v in args[i]))
+            try:
+                print(procedure + " " + ", ".join(str(v) for v in args[i]))
+                cursor.callproc(procedure, args[i])
+            except _mssql.MssqlDatabaseException:
+                print("error")
+            except pymssql.DatabaseError:
+                print("error2")
         conn.close()
 
 

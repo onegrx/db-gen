@@ -275,8 +275,58 @@ def fill_gen_add_payment():
     cn.close()
 
 
+def fill_gen_assign_attendee():
 
+    connector = Connector()
+    conn = connector.connect(secretpassword)
+    cursor = conn.cursor()
 
+    individual_participation = []
+
+    cursor.execute("select distinct Attendees.AttendeeID, Reservations.ReservationID "
+                   "from Attendees "
+                   "inner join Clients on Attendees.ClientID = Clients.ClientID "
+                   "inner join Reservations on Reservations.ClientID = Clients.ClientID "
+                   "inner join Individual on Individual.ClientID = Clients.ClientID")
+
+    row = cursor.fetchone()
+
+    while row:
+        individual_participation.append((row[0], row[1]))
+        row = cursor.fetchone()
+
+    company_participation = []
+
+    cursor.execute("select distinct Attendees.AttendeeID, Reservations.ReservationID "
+                   "from Attendees "
+                   "inner join Clients on Attendees.ClientID = Clients.ClientID "
+                   "inner join Reservations on Reservations.ClientID = Clients.ClientID "
+                   "inner join Company on Company.ClientID = Clients.ClientID")
+
+    row = cursor.fetchone()
+
+    while row:
+        company_participation.append((row[0], row[1]))
+        row = cursor.fetchone()
+
+    # Two list of (AttendeeID, ReservationID) to apply
+
+    # The following lines may cause declination of IDE control xD
+    # print(individual_participation)
+    # print(len(individual_participation))
+    # print(company_participation)
+    # print(len(company_participation))
+
+    # Those insertions causes error -> try block
+    filler = Connector()
+
+    individual_size = len(individual_participation)
+    filler.apply_proc_multi('AssignAttendee', individual_participation, individual_size)
+
+    company_size = len(company_participation)
+    filler.apply_proc_multi('AssignAttendee', company_participation, company_size)
+
+    conn.close()
 
 
 
