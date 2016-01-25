@@ -3,6 +3,9 @@ __author__ = 'onegrx'
 from generator import *
 from connector import Connector
 
+import time
+
+
 filler = Connector()
 records = 20
 
@@ -79,6 +82,8 @@ def fill_add_participation():
 
 def main():
 
+    start_time = time.time()
+
     print("***** Filling Company table *****")
     fill_add_company()
 
@@ -109,11 +114,13 @@ def main():
     print("***** Filling Deposits table *****")
     fill_add_payment()
 
-    # fill_add_participation()
+    fill_add_participation()
+    fill_gen_assign_workshop_attendee()
 
-    # fill_gen_assign_workshop_attendee()
+    now = time.time() - start_time
 
+    print("--- %s seconds ---" % now)
+    print("--- %s minutes ---" % int(now/60))
 
-
-#main()
+main()
 
